@@ -18,7 +18,7 @@ div.title{height: 26px; background-color: #efefef; line-height: 26px;}
 div.console{padding-left: 4px; height: 400px; background-color: #000000; overflow: auto;}
 div.console p{line-height: 16px; font-size: 10px; font-family: "Courier New"; color: #ffffff;}
 input[type=button] {margin: 0px 4px 0px 4px; height: 20px; border: 1px solid #c0c0c0;}
-input.btn{width: 20px; height: 20px;}
+input.btn{width: 50px; height: 50px;}
 div.mark{top: 0px; left: 0px; width: 400px; height: 400px; background-color: #000000; opacity:0.4; z-index: 9998; position: absolute; display: none;}
 </style>
 <script type="text/javascript">
@@ -216,13 +216,15 @@ function down() {
 </head>
 <body>
 <div style="margin: 10px auto 0px auto;">
-    <div>&nbsp;&nbsp;<input id="btn_up" type="button" class="btn" onClick="onKeyEvent('KEYCODE_UP')"/></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input id="btn_up" type="button" class="btn" onClick="onKeyEvent('KEYCODE_UP')"/></div>
     <div>
         <input id="btn_left" type="button" class="btn" onClick="onKeyEvent('KEYCODE_LEFT')"/>
         <input id="btn_ensure" type="button" class="btn" onClick="onKeyEvent('KEYCODE_OK')"/>
         <input id="btn_right" type="button" class="btn" onClick="onKeyEvent('KEYCODE_RIGHT')"/>
     </div>
-    <div>&nbsp;&nbsp;<input id="btn_down" type="button" class="btn" onClick="onKeyEvent('KEYCODE_DOWN')"/></div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input id="btn_down" type="button" class="btn" onClick="onKeyEvent('KEYCODE_DOWN')"/></div>
 </div>
 <div class="panel">
     <div class="title">

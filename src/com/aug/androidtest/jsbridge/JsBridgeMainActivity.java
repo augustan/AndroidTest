@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.ViewGroup;
 
 import com.aug.androidtest.R;
 import com.aug.androidtest.jsbridge.JsBridgeWebview.IWebClientCallback;
@@ -41,9 +40,9 @@ public class JsBridgeMainActivity extends Activity {
     public void initViews() {
         jswebview = (JsBridgeWebview) findViewById(R.id.jswebview);
 
-        ViewGroup.LayoutParams lp = jswebview.getLayoutParams();
-        lp.width = 800;
-        lp.height = 600;
+//        ViewGroup.LayoutParams lp = jswebview.getLayoutParams();
+//        lp.width = 800;
+//        lp.height = 600;
 
         jswebview.setWebClientCallback(new IWebClientCallback() {
 
@@ -94,10 +93,10 @@ public class JsBridgeMainActivity extends Activity {
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_BACK:
             case KeyEvent.KEYCODE_ESCAPE:
-                if (jswebview.canGoBack()) {
-                    jswebview.goBack();
+                if (event.getAction() == KeyEvent.ACTION_UP) {
                     handled = true;
-                } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                } else if (jswebview.canGoBack()) {
+                    jswebview.goBack();
                     handled = true;
                 } else {
                     handled = jswebview.onKeyEvent("KEYCODE_BACK");
