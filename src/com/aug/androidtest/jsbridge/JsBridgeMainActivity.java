@@ -58,6 +58,10 @@ public class JsBridgeMainActivity extends Activity {
             public void onCloseWebview() {
                 finish();
             }
+
+            @Override
+            public void onOpenWebview() {
+            }
         });
 
         jswebview.loadUrl(startUrl);

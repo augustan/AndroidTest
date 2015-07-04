@@ -12,16 +12,18 @@ import android.webkit.WebViewClient;
 
 import com.aug.androidtest.tool.LogUtils;
 
+import java.util.Map;
+
 public class JsBridgeWebview extends WebView {
 
     public interface IWebClientCallback {
         void onWebClientError(String msg);
-
+        void onOpenWebview();
         void onCloseWebview();
     }
 
     private class InnerWebviewClient extends WebViewClient {
-
+        
         @Override
         public void onReceivedError(WebView view, int errorCode, String description,
                 String failingUrl) {
@@ -31,11 +33,10 @@ public class JsBridgeWebview extends WebView {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-        }
-
-        @Override
-        public void onLoadResource(WebView view, String url) {
-            super.onLoadResource(view, url);
+            if (url != null && webClientCallback != null &&
+                    url.equals(startUrl)) {
+                webClientCallback.onOpenWebview();
+            }
         }
 
         @Override
@@ -58,6 +59,8 @@ public class JsBridgeWebview extends WebView {
     private Context mContext = null;
     private JsBridgeInterface jsBridgeInterface;
     private IWebClientCallback webClientCallback;
+    
+    private String startUrl = null;
 
     public JsBridgeWebview(Context context) {
         super(context);
@@ -112,6 +115,22 @@ public class JsBridgeWebview extends WebView {
         String js = String.format("javascript:%s(%s)", funcName, sb.toString());
         LogUtils.d("webclient", "call js: " + js);
         loadUrl(js);
+    }
+    
+    @Override
+    public void loadUrl(String url) {
+        if (TextUtils.isEmpty(startUrl)) {
+            startUrl = url;
+        }
+        super.loadUrl(url);
+    }
+    
+    @Override
+    public void loadUrl(String url, Map<String, String> extraHeaders) {
+        if (TextUtils.isEmpty(startUrl)) {
+            startUrl = url;
+        }
+        super.loadUrl(url, extraHeaders);
     }
 
     public boolean onKeyEvent(String keyCode) {

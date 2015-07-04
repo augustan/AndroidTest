@@ -134,16 +134,7 @@ function setToken(token) {
 }
 
 function login() {
-    logger.debug("setToken " + Array.prototype.join.apply(arguments, [","]));
     API.call("login");
-}
-
-function test2() {
-    logger.debug("setToken " + Array.prototype.join.apply(arguments, [","]));
-}
-
-function test3() {
-    logger.debug("setToken " + Array.prototype.join.apply(arguments, [","]));
 }
 
 function back() {
@@ -156,7 +147,6 @@ function back() {
 
 function closeSelf() {
     API.call("closeWebview");
-    //android.closeWebview();
 }
 
 function loadUrl() {
@@ -220,6 +210,7 @@ function down() {
     Util.hightlight("btn_down");
     logger.debug("down clicked.");
 }
+
 //]]>
 </script>
 </head>
