@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Pragma" content="no-cache"/> 
+<meta http-equiv="Cache-Control" content="no-cache"/> 
+<meta http-equiv="Expires" content="0"/>
+<style type="text/css">
+html, body, p{margin: 0px; padding: 0px;}
+div.panel{
+    height: 200px;
+    border: 2px solid #c0c0c0;
+    overflow: auto;
+}
+
+div.title{height: 26px; background-color: #efefef; line-height: 26px;}
+div.console{padding-left: 4px; height: 400px; background-color: #000000; overflow: auto;}
+div.console p{line-height: 16px; font-size: 10px; font-family: "Courier New"; color: #ffffff;}
+input[type=button] {margin: 0px 4px 0px 4px; height: 20px; border: 1px solid #c0c0c0;}
+input.btn{width: 20px; height: 20px;}
+div.mark{top: 0px; left: 0px; width: 400px; height: 400px; background-color: #000000; opacity:0.4; z-index: 9998; position: absolute; display: none;}
+</style>
+<script type="text/javascript">
+//<![CDATA[
+var logger = {};
+logger.clear = function() {
+    var e = document.getElementById("console");
+
+    if(e != null) {
+        e.innerHTML = "";
+    }
+};
+
+logger.debug = function(message) {
+    var e = document.getElementById("console");
+
+    if(e != null) {
+        var p = document.createElement("p");
+        var t = document.createTextNode("DEBUG: " + message);
+        p.appendChild(t);
+        e.appendChild(p);
+    }
+};
+
+var API = {};
+
+API.call = function() {
+    if(arguments.length < 1) {
+        throw new Error("未指定方法名.");
+    }
+
+    var methodName = arguments[0];
+    var args = Array.prototype.slice.apply(arguments, [1]);
+    logger.debug("invoke " + methodName + "(" + args.join(", ") + ");");
+
+    if(typeof(android) == "undefined") {
+        throw new Error("不支持的接口: android undefined.");
+    }
+
+    var method = android[methodName];
+    if (args.length < 1) {
+        method.call(android);
+    } else {
+        method.call(android, args);
+    }
+};
+
+var Util = {};
+
+Util.timer = null;
+Util.show = function(id) {
+    var e = document.getElementById(id);
+
+    if(e != null) {
+        e.style.display = "block";
+    }
+};
+
+Util.hide = function(id) {
+    var e = document.getElementById(id);
+
+    if(e != null) {
+        e.style.display = "none";
+    }
+};
+
+Util.setAttribute = function(id, name, value) {
+    var e = document.getElementById(id);
+
+    if(e != null) {
+        e.setAttribute(name, value);
+    }
+};
+
+Util.getAttribute = function(id, name) {
+    var e = document.getElementById(id);
+
+    if(e != null) {
+        return e.getAttribute(name);
+    }
+    return null;
+};
+
+Util.hightlight = function(id) {
+    if(Util.timer != null) {
+        clearTimeout(Util.timer);
+    }
+
+    var e = document.getElementById(id);
+
+    if(e != null) {
+        e.style.backgroundColor = "#ff0000";
+    }
+
+    Util.timer = setTimeout(function() {
+        e.style.backgroundColor = "#ffffff";
+    }, 200);
+}
+
+function showMark() {
+    Util.show("mark");
+    Util.setAttribute("mark", "status", "show");
+}
+
+function hideMark() {
+    Util.hide("mark");
+    Util.setAttribute("mark", "status", "hide");
+}
+
+/* 接口 */
+function setToken(token) {
+    logger.debug("setToken " + Array.prototype.join.apply(arguments, [","]));
+}
+
+function login() {
+    logger.debug("setToken " + Array.prototype.join.apply(arguments, [","]));
+    API.call("login");
+}
+
+function test2() {
+    logger.debug("setToken " + Array.prototype.join.apply(arguments, [","]));
+}
+
+function test3() {
+    logger.debug("setToken " + Array.prototype.join.apply(arguments, [","]));
+}
+
+function back() {
+    if(Util.getAttribute("mark", "status") == "show") {
+        hideMark();
+        return;
+    }
+    closeSelf();
+}
+
+function closeSelf() {
+    API.call("closeWebview");
+    //android.closeWebview();
+}
+
+function loadUrl() {
+    API.call("startActivity");
+}
+
+function getToken() {
+    API.call("getToken");
+}
+
+function onKeyEvent(type) {
+    if(type == "KEYCODE_UP") {
+        up();
+        window.location.href = "http://www.baidu.com";
+    }
+    else if(type == "KEYCODE_LEFT") {
+        left();
+        getToken();
+    }
+    else if(type == "KEYCODE_OK") {
+        ensure();
+    }
+    else if(type == "KEYCODE_RIGHT") {
+        right();
+        API.call("login");
+    }
+    else if(type == "KEYCODE_DOWN") {
+        down();
+        showMark();
+    }
+    else if(type == "KEYCODE_BACK") {
+        back();
+    }
+    else {
+        logger.debug("error: " + type);
+    }
+};
+
+function up() {
+    Util.hightlight("btn_up");
+    logger.debug("up clicked.");
+}
+
+function left() {
+    Util.hightlight("btn_left");
+    logger.debug("left clicked.");
+}
+
+function ensure() {
+    Util.hightlight("btn_ensure");
+    API.call("startActivity");
+    logger.debug("ensure clicked.");
+}
+
+function right() {
+    Util.hightlight("btn_right");
+    logger.debug("right clicked.");
+}
+
+function down() {
+    Util.hightlight("btn_down");
+    logger.debug("down clicked.");
+}
+//]]>
+</script>
+</head>
+<body>
+<div style="margin: 10px auto 0px auto;">
+    <div>&nbsp;&nbsp;<input id="btn_up" type="button" class="btn" onClick="onKeyEvent('KEYCODE_UP')"/></div>
+    <div>
+        <input id="btn_left" type="button" class="btn" onClick="onKeyEvent('KEYCODE_LEFT')"/>
+        <input id="btn_ensure" type="button" class="btn" onClick="onKeyEvent('KEYCODE_OK')"/>
+        <input id="btn_right" type="button" class="btn" onClick="onKeyEvent('KEYCODE_RIGHT')"/>
+    </div>
+    <div>&nbsp;&nbsp;<input id="btn_down" type="button" class="btn" onClick="onKeyEvent('KEYCODE_DOWN')"/></div>
+</div>
+<div class="panel">
+    <div class="title">
+    </div>
+    <div id="console" class="console"><p>console ready.</p></div>
+</div>
+<div id="mark" class="mark"></div>
+</body>
+</html>

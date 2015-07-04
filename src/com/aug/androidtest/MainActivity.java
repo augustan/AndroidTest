@@ -1,8 +1,6 @@
 
 package com.aug.androidtest;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +11,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.aug.androidtest.jsbridge.JsBridgeMainActivity;
 import com.aug.androidtest.movie.gif.MovieGifActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity implements OnClickListener {
     
@@ -29,6 +30,7 @@ public class MainActivity extends Activity implements OnClickListener {
         mTestClass.add(AnimationActivity.class);
         mTestClass.add(LaunchModeActivity.class);
         mTestClass.add(ServiceTestActivity.class);
+        mTestClass.add(JsBridgeMainActivity.class);
     }
     
     @Override
